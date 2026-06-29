@@ -1,0 +1,2 @@
+user auditor_mqtt
+topic readwrite servidor/notas

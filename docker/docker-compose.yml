@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   mailserver:
     image: axllent/mailpit
@@ -7,9 +5,22 @@ services:
     ports:
       - "1025:1025"
       - "8025:8025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: "true"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "true"
     read_only: true 
     security_opt:
       - no-new-privileges:true 
     tmpfs:
       - /tmp
+    restart: unless-stopped
+  mqtt_broker:
+    image: eclipse-mosquitto:2
+    container_name: local_mqtt_broker
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./password.txt:/mosquitto/config/password.txt
+      - ./acl.txt:/mosquitto/config/acl.txt 
     restart: unless-stopped
